@@ -6,11 +6,13 @@ import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.api.v1.model.CustomerListDTO;
 import guru.springfamework.services.CategoryService;
 import guru.springfamework.services.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "customer-controller", description = "This is the Customer controller") // Custom SWAGGER
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
