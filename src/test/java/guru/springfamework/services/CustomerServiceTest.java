@@ -1,12 +1,11 @@
 package guru.springfamework.services;
 
-import guru.springfamework.api.v1.mapper.CategoryMapper;
 import guru.springfamework.api.v1.mapper.CustomerMapper;
-import guru.springfamework.api.v1.model.CategoryDTO;
 import guru.springfamework.api.v1.model.CustomerDTO;
-import guru.springfamework.domain.Category;
+import guru.springfamework.controllers.v1.CustomerController;
+
 import guru.springfamework.domain.Customer;
-import guru.springfamework.repositories.CategoryRepository;
+
 import guru.springfamework.repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,7 +87,7 @@ public class CustomerServiceTest {
 
         // then
         assertEquals(customerDTO.getFirstname(),savedDTO.getFirstname());
-        assertEquals("/api/v1/customer/"+ID,savedDTO.getCustomerUrl());
+        assertEquals(CustomerController.BASE_URL+"/"+ID,savedDTO.getCustomerUrl());
     }
 
     @Test
@@ -109,7 +108,7 @@ public class CustomerServiceTest {
 
         //then
         assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
-        assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
+        assertEquals(CustomerController.BASE_URL+"/1", savedDto.getCustomerUrl());
     }
 
     @Test
