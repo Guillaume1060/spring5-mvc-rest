@@ -2,7 +2,9 @@ package guru.springfamework.controllers;
 
 import guru.springfamework.api.v1.model.CategoryDTO;
 import guru.springfamework.controllers.v1.CategoryController;
+import guru.springfamework.controllers.v1.RestResponseEntityExceptionHandler;
 import guru.springfamework.services.CategoryService;
+import guru.springfamework.services.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -41,7 +43,9 @@ public class CategoryControllerTest {
         //categoryController = new CategoryController(categoryService);
 
         // créer mockMvc pour simuler des requêtes HTTP vers le contrôleur
-        mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(categoryController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler()) // Pour manager es exceptions
+                .build();
     }
 
     @Test
@@ -77,5 +81,15 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(NAME)));
+    }
+
+    @Test
+    public void testGetByNameNotFound() throws Exception {
+
+        when(categoryService.getCategoryByName(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CategoryController.BASE_URL + "/Foo")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

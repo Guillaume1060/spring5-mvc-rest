@@ -2,8 +2,10 @@ package guru.springfamework.controllers;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.controllers.v1.CustomerController;
+import guru.springfamework.controllers.v1.RestResponseEntityExceptionHandler;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.services.CustomerService;
+import guru.springfamework.services.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -46,7 +48,9 @@ public class CustomerControllerTest {
         //customerController = new CustomerController(customerService);
 
         // créer mockMvc pour simuler des requêtes HTTP vers le contrôleur
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler()) // Pour manager es exceptions
+                .build();
     }
 
     @Test
@@ -161,5 +165,15 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         verify(customerService).deleteCustomerById(anyLong());
+    }
+
+    @Test
+    public void testNotFoundException() throws Exception {
+
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.BASE_URL + "/222")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
