@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController // i/o @Controller : no need to resond with an ResponseEntity
+@RestController // i/o @Controller : no need to respond with an ResponseEntity
 @RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
 
