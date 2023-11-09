@@ -68,6 +68,7 @@ public class CustomerControllerTest {
         when(customerService.getAllCustomers()).thenReturn(customers);
 
         mockMvc.perform(get("/api/v1/customers")
+                        .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
         // .customers" : C'est un chemin JSONPath qui permet d'accéder au champ "customers" dans le JSON renvoyé par la réponse.
@@ -83,6 +84,7 @@ public class CustomerControllerTest {
         when(customerService.getCustomerById(anyLong())).thenReturn(customer1);
 
         mockMvc.perform(get("/api/v1/customers/"+ID)
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(1)));
@@ -104,6 +106,7 @@ public class CustomerControllerTest {
         when(customerService.createNewCustomer(customerDTO)).thenReturn(returnDTO);
 
         mockMvc.perform(post("/api/v1/customers/")
+                        .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isCreated())
@@ -127,6 +130,7 @@ public class CustomerControllerTest {
 
         //when/then
         mockMvc.perform(put(CustomerController.BASE_URL+"/1")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(customer)))
                 .andExpect(status().isOk())
@@ -150,6 +154,7 @@ public class CustomerControllerTest {
         when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
         mockMvc.perform(patch(CustomerController.BASE_URL+"/1")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(customer)))
                 .andExpect(status().isOk())
@@ -173,6 +178,7 @@ public class CustomerControllerTest {
         when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
         mockMvc.perform(get(CustomerController.BASE_URL + "/222")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
